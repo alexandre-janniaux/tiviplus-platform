@@ -1,0 +1,370 @@
+<?php	
+	include ("php/functions.php");
+	$co = sql();
+	
+	/********************************************************************
+						PARTIE I : RECUPERATION DES DONNEES				
+	********************************************************************/
+	
+	date_default_timezone_set ('Europe/Paris');
+	$now = time();
+	
+	// Si l'utilisateur n'est pas connecté
+	if (!isset($_SESSION['ID']))
+	{
+		header("Location: http://www.planningloc.esy.es/index.php");
+		die();
+	}
+	
+	// On récupère les données depuis la base MySQL (membre)
+	if (!isset($_SESSION['membre']))
+	{
+		$req['membre'] = mysqli_query($co, "SELECT * FROM membre WHERE ID='".$_SESSION['ID']."'");
+		$res['membre'] = mysqli_fetch_array($req['membre']);
+		
+		$_SESSION['membre'] = $res['membre'];
+	}
+	
+	
+	// On récupère les données depuis la base MySQL (tous les membres)
+	if (!isset($_SESSION['membre_all']))
+	{
+		$req['membre_all'] = mysqli_query($co, "SELECT * FROM membre");
+		while($res['membre_all'] = mysqli_fetch_array($req['membre_all']))
+		{
+			$_SESSION['membre_all'][$res['membre_all']['ID']] = $res['membre_all'];
+		}
+	}
+	
+	
+	// On récupère les données depuis la base MySQL (matos, objectifs et accessoires)
+	if (!isset($_SESSION['matos']))
+	{
+	
+		$req['matos'] = mysqli_query($co, "SELECT * FROM matos");
+		
+		while ($res['matos'] = mysqli_fetch_array($req['matos']))
+		{
+			$_SESSION['matos'][$res['matos']['value']] = $res['matos'];
+		}
+	}
+	
+	if (!isset($_SESSION['objo']))
+	{
+	
+		$req['objo'] = mysqli_query($co, "SELECT * FROM objo");
+		
+		while ($res['objo'] = mysqli_fetch_array($req['objo']))
+		{
+			$_SESSION['objo'][$res['objo']['value']] = $res['objo'];
+		}
+	}
+	
+	if (!isset($_SESSION['accessoire']))
+	{
+		$req['accessoire'] = mysqli_query($co, "SELECT * FROM accessoire");
+
+		while ($res['accessoire'] = mysqli_fetch_array($req['accessoire']))
+		{
+			$_SESSION['accessoire'][$res['accessoire']['value']] = $res['accessoire'];
+		}
+	}
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+			
+			<!-- Latest compiled and minified CSS -->
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+			
+		<title>Planning de location Planetes</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<link rel="shortcut icon" type="image/png" href="/images/logo.png" />
+		
+		<style>
+		.nav-pills > .noround a {
+		border-radius: 0px;
+		background-color: #eee
+		}
+
+		.nav.nav-pills>li+li {
+		margin-left: 2px;
+		/*orig: 2px*/
+		}
+
+		.tab-pane {
+		background-color: rgba(125, 125, 125, 0.1);
+		padding: 1.5rem;
+		margin-top: 0.3rem;
+		}
+
+		.tab-pane h3 {
+		margin-top: 1rem;
+		}
+
+		li.active .btn-group .btn {
+		background-color: #337ab7;
+		color: #fff;
+		}
+
+		table.table {
+		width: 100%;
+		font-size: 1.5rem;
+		}
+
+		thead .table-head {
+		box-sizing: border-box;
+		color: rgb(125, 125, 125, 0.7);
+		height: 50%;
+		}
+		</style>
+
+	</head>
+	<body>
+		<div class="container" style="padding-top:2%;">
+		
+			<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand"><img src="/images/logo_rect.png" style="height: 25px; width: auto; float:left;"/>&nbsp;Planètes</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="planning.php">Planning</a></li>
+					<li class="active"><a href="#">Liste du matériel <span class="sr-only">(current)</span></a></li>
+					<li><a href="admin.php">Administration</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="index.php?action=out"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Se déconnecter</a></li>
+					</li>
+				</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+			</nav>
+			
+			<h2>Liste du matériel</h2>
+			
+			<br/>
+						
+			<ul class="nav nav-pills">
+				<li class='active'><a data-toggle="pill" href="#matos">Boîtiers/Caméras</a></li>
+				<li><a data-toggle="pill" href="#objo">Objectifs</a></li>
+				<li><a data-toggle="pill" href="#accessoire">Accessoires</a></li>
+			</ul>
+			
+			<br/>
+			
+			<div class="tab-content">	
+				<div id="matos" class="tab-pane fade in active">
+					<table class="table table-hover auto">
+						<thead>
+							<tr>
+								<th>Boîtier/Caméra</th>
+								<th>Quantité</th>
+								<th>Nombre total d'emprunts</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							foreach($_SESSION['matos'] as $matos)
+							{
+								?>
+								<tr>
+									<td><?php echo $matos['nom']; ?></td>
+									<td><?php echo $matos['nb']; ?></td>
+									<td><?php echo $matos['nb_emprunt']; ?></td>
+								</tr>
+								<?php
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+				
+				<div id="objo" class="tab-pane fade">
+					<table class="table table-hover auto">
+						<thead>
+							<tr>
+								<th>Objectif</th>
+								<th>Quantité</th>
+								<th>Nombre total d'emprunts</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							foreach($_SESSION['objo'] as $objo)
+							{
+								?>
+								<tr>
+									<td><?php echo $objo['nom']; ?></td>
+									<td><?php echo $objo['nb']; ?></td>
+									<td><?php echo $objo['nb_emprunt']; ?></td>
+								</tr>
+								<?php
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+				
+				<div id="accessoire" class="tab-pane fade">
+					<table class="table table-hover auto">
+						<thead>
+							<tr>
+								<th>Accessoire</th>
+								<th>Quantité</th>
+								<th>Nombre total d'emprunts</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="3">
+									<h4>CARTES SD</h4>
+								</td>
+							</tr>
+							<?php
+							foreach($_SESSION['accessoire'] as $accessoire)
+							{
+								if ($accessoire['categorie'] == "sd")
+								{
+									?>
+									<tr>
+										<td><?php echo $accessoire['nom']; ?></td>
+										<td><?php echo $accessoire['nb']; ?></td>
+										<td><?php echo $accessoire['nb_emprunt']; ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+							<tr>
+								<td colspan="3">
+									<h4>ACCESSOIRES PHOTO</h4>
+								</td>
+							</tr>
+							<?php
+							foreach($_SESSION['accessoire'] as $accessoire)
+							{
+								if ($accessoire['categorie'] == "photo")
+								{
+									?>
+									<tr>
+										<td><?php echo $accessoire['nom']; ?></td>
+										<td><?php echo $accessoire['nb']; ?></td>
+										<td><?php echo $accessoire['nb_emprunt']; ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+							<tr>
+								<td colspan="3">
+									<h4>ACCESSOIRES VIDÉO</h4>
+								</td>
+							</tr>
+							<?php
+							foreach($_SESSION['accessoire'] as $accessoire)
+							{
+								if ($accessoire['categorie'] == "video")
+								{
+									?>
+									<tr>
+										<td><?php echo $accessoire['nom']; ?></td>
+										<td><?php echo $accessoire['nb']; ?></td>
+										<td><?php echo $accessoire['nb_emprunt']; ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+							<tr>
+								<td colspan="3">
+									<h4>ACCESSOIRES DIVERS</h4>
+								</td>
+							</tr>
+							<?php
+							foreach($_SESSION['accessoire'] as $accessoire)
+							{
+								if ($accessoire['categorie'] == "divers")
+								{
+									?>
+									<tr>
+										<td><?php echo $accessoire['nom']; ?></td>
+										<td><?php echo $accessoire['nb']; ?></td>
+										<td><?php echo $accessoire['nb_emprunt']; ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+							<tr>
+								<td colspan="3">
+									<h4>ACCESSOIRES SON</h4>
+								</td>
+							</tr>
+							<?php
+							foreach($_SESSION['accessoire'] as $accessoire)
+							{
+								if ($accessoire['categorie'] == "son")
+								{
+									?>
+									<tr>
+										<td><?php echo $accessoire['nom']; ?></td>
+										<td><?php echo $accessoire['nb']; ?></td>
+										<td><?php echo $accessoire['nb_emprunt']; ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+		
+		<br/><br/>
+		
+		<img src='images/background.png' style='float:right; padding-right:6%; padding-bottom:2%;'/>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+		
+		<script src="js/bootstrap.min.js"></script>
+		
+		<!-- Bootstrap multiselect -->
+		<script src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+		
+		<script>
+			$(document).ready(function(){
+				$('[data-toggle="popover"]').popover();
+			});
+		</script>
+		
+	</body>
+</html>
+			
+			
+			

@@ -1,0 +1,66 @@
+{% extends 'base_template.html' %}
+{% load static %}
+
+{% block scripts %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- Bootstrap multiselect -->
+<script src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+{% endblock %}
+
+
+{% block contents %}
+
+{% include "navbar.html" with active="stocklist" %}
+
+<h2>Planning de location</h2>
+
+<ul class="nav nav-pills">
+	<li class='active'><a data-toggle="pill" href="#matos">Boîtiers/Caméras</a></li>
+	<li><a data-toggle="pill" href="#objo">Objectifs</a></li>
+	<li><a data-toggle="pill" href="#accessoire">Accessoires</a></li>
+	{#% if can_add %#}
+	<li class="btn btn-warning" data-toggle="modal" data-target="#modal-create-material"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>Ajouter un élément</b></li>
+	{#% endif %#}
+</ul>
+
+<br/>
+
+<div class="tab-content">
+
+	<table class="table table-bordered table-striped table-hover">
+	    <thead>
+			<tr class="table-head">
+				<th>Photo</th>
+				<th class="col-md-2">Type de matériel</th>
+				<th class="col-md-1">Nom</th>
+			</tr>
+	    </thead>
+	    <tbody>
+			{% for material_entry in stocklist_list %}
+			<tr>
+				<td><img src="{{ material_entry.photo.url }}" width="80px" height="80px" /></td>
+				<td>{{ material_entry.category.name }}</td>
+				<td>{{ material_entry.name }}</td>
+				<td>{{ material_entry.quantity }}</td>
+			</tr>
+			{% empty %}
+			<td style='text-align:center;' colspan="7"><br/>Aucun matériel ajouté à l'application.<br/><br/></td>
+			{% endfor %}
+	    </tbody>
+	</table>
+    </div>
+</div>
+
+{% include "stocklist/materialdef_dialog_create.html" with form=material_create_form modal_id="modal-create-material" only %}
+
+{% endblock %}
+
+
