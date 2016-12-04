@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 	<!-- Brand and toggle get grouped for better mobile display -->
@@ -8,25 +9,21 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 	    </button>
-	    <a class="navbar-brand"><img src="/images/logo_rect.png" style="height: 25px; width: auto; float:left;"/>&nbsp;Planètes</a>
+	    <a class="navbar-brand"><img src="/images/logo_rect.png" style="height: 25px; width: auto; float:left;"/>&nbsp;TiVi+</a>
 	</div>
 
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	    <ul class="nav navbar-nav">
 		
-		<li class="active"><a href="/planning/">Planning
-			{% if active == "planning" %}<span class="sr-only">(current)</span>{% endif %}
-		</a></li>
+		<li {% if active == "planning" %}class="active"{% endif %}><a href="/planning/">Planning</a></li>
 		
-		<li><a href="/materiel/">Liste du matériel
-			{% if active == "stocklist" %}<span class="sr-only">(current)</span>{% endif %}
-		</a></li>
+		<li {% if active == "stocklist" %}class="active"{% endif %}><a href="/materiel/">Liste du matériel</a></li>
 		<li><a href="/admin/">Administration</a></li>
 	    </ul>
 
 	    <ul class="nav navbar-nav navbar-right">
-		<li><a href="index.php?action=out"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Se déconnecter</a></li>
+		<li><a href="/logout/"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Se déconnecter</a></li>
 		</li>
 	    </ul>
 	</div><!-- /.navbar-collapse -->
