@@ -1,0 +1,25 @@
+{% load widget_tweaks %}
+<form method="post" action="{% url 'stocklist:create-category' %}">
+	{#% csrf_token %#}
+	<div id="{{ modal_id }}" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 class="modal-title">Ajout d'une catégorie dans l'inventaire</h3>
+				</div>
+
+
+				<div class="modal-body">
+					<label for="{{form.name.id}}">Nom de la catégorie</label>
+					{% render_field form.name class+="form-control" %}	
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button type="submit" class="btn btn-primary">Ajouter l'objet</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

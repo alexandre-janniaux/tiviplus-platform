@@ -28,6 +28,7 @@
 	<li><a data-toggle="pill" href="#accessoire">Accessoires</a></li>
 	{#% if can_add %#}
 	<li class="btn btn-warning" data-toggle="modal" data-target="#modal-create-material"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>Ajouter un élément</b></li>
+	<li class="btn btn-warning" data-toggle="modal" data-target="#modal-create-category"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>Ajouter une catégorie</b></li>
 	{#% endif %#}
 </ul>
 
@@ -38,18 +39,22 @@
 	<table class="table table-bordered table-striped table-hover">
 	    <thead>
 			<tr class="table-head">
-				<th>Photo</th>
+				<th class="col-md-1">Photo</th>
 				<th class="col-md-2">Type de matériel</th>
-				<th class="col-md-1">Nom</th>
+				<th class="col-md-2">Nom</th>
+				<th class="col-md-2">Action</th>
 			</tr>
 	    </thead>
-	    <tbody>
+	    <tbody class="table-hover">
 			{% for material_entry in stocklist_list %}
 			<tr>
-				<td><img src="{{ material_entry.photo.url }}" width="80px" height="80px" /></td>
+				<td><img src="{{ material_entry.photo.url }}" width="40px" height="40px" /></td>
 				<td>{{ material_entry.category.name }}</td>
 				<td>{{ material_entry.name }}</td>
-				<td>{{ material_entry.quantity }}</td>
+				<td>
+					<button class="btn btn-warning">Editer</button>
+					<button class="btn btn-warning">Supprimer</button>
+				</td>
 			</tr>
 			{% empty %}
 			<td style='text-align:center;' colspan="7"><br/>Aucun matériel ajouté à l'application.<br/><br/></td>
@@ -60,6 +65,7 @@
 </div>
 
 {% include "stocklist/materialdef_dialog_create.html" with form=material_create_form modal_id="modal-create-material" only %}
+{% include "stocklist/category_dialog_create.html" with form=category_create_form modal_id="modal-create-category" only %}
 
 {% endblock %}
 
