@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from members.forms import LoginForm
@@ -11,7 +11,7 @@ def login_view(request):
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			login(user, request)
-			return redirect(reverse('planning'))
+			return redirect('planning:list-loan')
 		return render(request, 'members/login.html',
 				 { 'login_form': form })
 	else:
