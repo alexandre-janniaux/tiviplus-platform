@@ -29,6 +29,10 @@
 
 			<label for="{{login_form.password.id }}">Mot de passe</label>
 			{% render_field login_form.password class+="form-control" %}
+
+			{% for error in errors %}
+				<p>{{ error }}</p>
+			{% endfor %}
 		</div>
 		<br />
 
