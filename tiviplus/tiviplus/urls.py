@@ -16,14 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-
-import planning.urls as planning_urls
-from stocklist.views import StocklistListView
 from pages.views import home
-from members.views import login_view
+
 
 urlpatterns = [
-	url(r'^login/$', login_view, name="login"),
+	url(r'^members/', include ('members.urls')),
+
 	url(r'^materiel/', include('stocklist.urls')),
 	url(r'^planning/', include('planning.urls')),
 

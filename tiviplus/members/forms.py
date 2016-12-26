@@ -2,5 +2,5 @@ from django import forms
 
 
 class LoginForm(forms.Form):
-	email = forms.EmailField(label='email')
+	username = forms.CharField(label='username', max_length="120")
 	password = forms.CharField(label='password', widget=forms.PasswordInput)

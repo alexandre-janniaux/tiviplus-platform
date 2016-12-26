@@ -24,7 +24,7 @@
 	    </ul>
 
 	    <ul class="nav navbar-nav navbar-right">
-		<li><a href="/logout/"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Se déconnecter</a></li>
+		<li><a href="{% url 'members:logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Se déconnecter (<b>{{ user.username }}</b>)</a></li>
 		</li>
 	    </ul>
 	</div><!-- /.navbar-collapse -->

@@ -19,11 +19,11 @@
 <div class="center">
 	<h1 class="center" style="width:100%; text-align:center">Planning de réservation de TiVi+</h1>
 
-	<form action='members/login' method='POST' class="form-signin">
+	<form action="{% url 'members:login' %}" method='POST' class="form-signin">
 		{% csrf_token %}
 		<div class="form-control">
-			<label for="{{ login_form.email.id }}">Adresse e-mail</label>
-			{% render_field login_form.email class+="form-control" %}
+			<label for="{{ login_form.username.id }}">Identifiant</label>
+			{% render_field login_form.username class+="form-control" %}
 
 			<br />
 
