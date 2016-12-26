@@ -26,4 +26,4 @@ def login_view(request):
 @login_required
 def logout_view(request):
 	logout(request)
-	redirect('members:login')
+	return redirect('members:login')
