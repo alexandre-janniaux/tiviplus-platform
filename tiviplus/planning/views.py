@@ -3,7 +3,8 @@ from django.views.generic import (
 	DetailView, 
 	CreateView, 
 	UpdateView, 
-	DeleteView
+	DeleteView,
+	FormView
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,13 +25,13 @@ class MaterialLoanListView(ListView):
 class MaterialLoanDetailView(DetailView):
 	model = MaterialLoan
 
-class MaterialLoanCreateView(CreateView, LoginRequiredMixin):
-	model = MaterialLoan
+class MaterialLoanCreateView(FormView, LoginRequiredMixin):
 	form_class = MaterialLoanCreateForm
+	template_name = 'planning/materialloan_create.html'
 
-	def form_valid(self, form):
-		if not form.instance.borrower:
-			form.instance.borrower = self.user
+	#def form_valid(self, form):
+	#	if not form.instance.borrower:
+	#		form.instance.borrower = self.user
 
 class MaterialLoanUpdateView(UpdateView, LoginRequiredMixin):
 	model = MaterialLoan
