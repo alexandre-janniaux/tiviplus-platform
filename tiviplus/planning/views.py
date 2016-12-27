@@ -12,7 +12,7 @@ from .models import MaterialLoan
 from .forms  import MaterialLoanCreateForm
 
 class MaterialLoanListView(ListView):
-	queryset = MaterialLoan.objects.all().order_by('borrower').order_by('-date').filter(returned=False)
+	queryset = MaterialLoan.objects.all().order_by('borrower').order_by('-date').filter(returned_date__isnull=True)
 	context_object_name = 'material_loans'
 
 	def get_context_data(self, **kwargs):
