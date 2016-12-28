@@ -50,7 +50,7 @@
 			<tr>
 				<td><img src="{{ material_entry.photo.url }}" width="40px" height="40px" /></td>
 				<td>{{ material_entry.category.name }}</td>
-				<td>{{ material_entry.name }}</td>
+				<td><a href="{% url 'stocklist:detail-material' pk=material_entry.pk %}">{{ material_entry.name }}</a></td>
 				<td>
 					<button class="btn btn-warning">Editer</button>
 					<button class="btn btn-warning">Supprimer</button>

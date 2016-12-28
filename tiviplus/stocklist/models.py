@@ -5,6 +5,9 @@ class MaterialDefCategory(models.Model):
 	name = models.CharField(max_length=100)
 
 class MaterialDef(models.Model):
+	"""
+		TODO: Export metadata to a new model
+	"""
 	name     = models.CharField(max_length=100)
 	category = models.ForeignKey(MaterialDefCategory)
 	# quantity = models.IntegerField() # Not relevant for SD card and the rest (date)
