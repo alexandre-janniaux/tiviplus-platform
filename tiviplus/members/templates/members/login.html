@@ -3,17 +3,13 @@
 {% load widget_tweaks %}
 
 {% block scripts %}
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
-
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-
 {% endblock %}
 
+{% block header %}
+	<img src="{% static 'images/logo_tivi.png' %}" style="margin:auto; text-align:center; display:block"/>
+{% endblock %}
 
 {% block contents %}
 <div class="center">
